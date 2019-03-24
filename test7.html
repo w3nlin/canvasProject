@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            background:black;
+        }
+        #c1{
+            background:white;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+           var canvasObj = document.getElementById("c1");
+            var canvasActionObj=canvasObj.getContext("2d");
+            var canvasActionObj1=canvasObj.getContext("2d");
+            var canvasActionObj2=canvasObj.getContext("2d");
+
+            canvasObj.onmousedown=function(e){
+                var e=e;
+                canvasActionObj.moveTo(e.clientX-canvasObj.offsetLeft, e.clientY-canvasObj.offsetTop);
+                canvasObj.onmousemove=function(e){
+                    var e=e;
+                    canvasActionObj.lineTo(e.clientX-canvasObj.offsetLeft, e.clientY-canvasObj.offsetTop);
+                    canvasActionObj.stroke();
+                }
+                canvasObj.onmouseup=function(){
+                    canvasObj.onmouseup=null;
+                    canvasObj.onmousemove=null;
+                }
+            }
+
+
+
+
+
+            var num=0;
+            canvasActionObj.fillRect(0,0,20,20);
+            canvasActionObj1.fillRect(380,0,20,20);
+
+            setInterval(function(){
+
+                num++;
+
+                canvasActionObj.fillRect(num,num,20,20);
+                canvasActionObj1.fillRect(380-num,num,20,20);
+
+            },40);
+
+
+
+
+
+
+            canvasActionObj2.fillRect(175,0,50,50);
+
+            setInterval(function(){
+                canvasActionObj2.save();
+                canvasActionObj2.fillStyle="red";
+                num++;
+                canvasActionObj2.clearRect(175,num-10,50,50);
+                canvasActionObj2.fillRect(175,num,50,50);
+                canvasActionObj2.restore();
+
+            },40);
+
+
+
+        }
+    </script>
+</head>
+<body>
+<canvas id="c1" width="400" height="400"></canvas>
+</body>
+</html>
