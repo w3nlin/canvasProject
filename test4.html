@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        window.onload=function(){
+            var oC= document.getElementById("c1");
+            var oGC=oC.getContext("2d");
+
+            var yImg=new Image();
+
+            yImg.onload=function(){
+                draw(this);
+            }
+            yImg.src="image/mxcz.png";
+
+            function draw(obj){
+                oC.width=obj.width;
+                oC.height=obj.height*2;
+                oGC.drawImage(obj,0,0);
+
+                var oImg=oGC.getImageData(0,0,obj.width,obj.height);
+                var w=oImg.width;
+                var h=oImg.height;
+
+                var newImg=oGC.createImageData(obj.width,obj.height);
+
+                var stepW=w/10;
+                var stepH=h/10;
+
+                for(var i=0;i<stepH;i++){
+                    for(var j=0;j<stepW;j++){
+                        var color=getXY(oImg,j*10+Math.floor(Math.random()*10),i*10+Math.floor(Math.random()*10));
+
+                        for(var k=0;k<10;k++){
+                            for(var l=0;l<10;l++){
+                                setXY(newImg,j*10+l,i*10+k,color);
+                            }
+                        }
+                    }
+                }
+
+                oGC.putImageData(newImg,0,obj.height);
+
+                /*for(var i=0;i<h;i++){
+                    for(var j=0;j<w;j++){
+                        var result=[];
+                        var color=getXY(oImg,j,i);
+                        result[0]=255-color[0];
+                        result[1]=255-color[1];
+                        result[2]=255-color[2];
+                        result[3]=255*i/h;          //渐变
+                        setXY(newImg,j,h-i,result);
+                    }
+                }*/
+                /*oGC.putImageData(newImg,0,obj.height);*/
+            }
+            function setXY(obj,x,y,color){//0.2.2.设置 方法
+                var w=obj.width;
+                var h=obj.height;
+                var d=obj.data;
+
+                d[4*(y*w+x)]=color[0];
+                d[4*(y*w+x)+1]= color[1];
+                d[4*(y*w+x)+2]= color[2];
+                d[4*(y*w+x)+3]=color[3];
+
+            }
+            function getXY(obj,x,y){//2.封装一个方法来获取坐标
+                var w=obj.width;
+                var h=obj.height;
+                var d=obj.data;
+                var color=[];
+                color[0]=d[4*(y*w+x)];
+                color[1]=d[4*(y*w+x)+1];
+                color[2]=d[4*(y*w+x)+2];
+                color[3]=d[4*(y*w+x)+3];
+                return color;
+            }
+        }
+    </script>
+</head>
+<body>
+<canvas id="c1" width="600" height="600"></canvas>
+</body>
+</html>
