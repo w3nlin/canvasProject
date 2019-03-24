@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            background: black;
+        }
+        #id1{
+            background:white;
+        }
+
+    </style>
+    <script>
+
+        window.onload=function(){
+            var id1=document.getElementById("id1");
+            var id11=id1.getContext("2d");
+
+            id1.onmousedown=function(ev){
+                var ev = ev                                    /*|| window.event;*/
+                id11.moveTo(ev.clientX-id1.offsetLeft,ev.clientY-id1.offsetTop);
+                document.onmousemove=function(ev){
+                    var ev=ev                          /*||window.event;*/
+                    id11.lineTo(ev.clientX-id1.offsetLeft,ev.clientY-id1.offsetTop);
+                    id11.stroke();
+                };
+                document.onmouseup=function(){
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                  };
+            };
+
+        }
+
+    </script>
+</head>
+<body>
+<canvas id="id1" width="400" height="400"></canvas>
+</body>
+</html>
