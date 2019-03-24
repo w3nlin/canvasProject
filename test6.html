@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            background:black;
+        }
+        #c1{
+            background:white;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+            var aInput=document.getElementsByTagName("input"); /*1.获取这套按钮*/
+            var oImg=document.getElementById("img1"); /*2.获取图片*/
+
+            var yImg=new Image(); /*3.预加载*/
+
+            var iNow=0;
+
+            yImg.onload=function(){ /*4.加载之后调用方法*/
+                draw(oImg);
+            }
+
+            yImg.src=oImg.src;
+
+            function draw(obj){ /*5.写函数，创建图片对象*/
+                var oc= document.createElement("canvas"); /*6.创建canvas替换图片*/
+                var ogc=oc.getContext("2d");/*7.绘制它的绘图环境*/
+
+                oc.width=obj.width; /*8.canvas大小要和图片大小一致*/
+                oc.height=obj.height;/*8.canvas大小要和图片大小一致*/
+
+                obj.parentNode.replaceChild(oc,obj); /*9.canvas替换图片*/
+
+                ogc.drawImage(obj,0,0);/*10.把图片加进去*/
+
+                aInput[1].onclick=function(){/*11.给第二个按钮添加点击事件*/
+                    if(iNow==3){
+                        iNow=0;
+                    }else{
+                        iNow++;
+                    }toChange();}
+
+                    aInput[0].onclick=function(){/*11.给第一个按钮添加点击事件*/
+                        if(iNow==0){
+                            iNow=3;
+                        }else{
+                            iNow--;
+                        }toChange();//旋转图片的方法
+                }
+
+                function toChange(){ /*旋转图片*/
+                    switch(iNow){
+                        case 1:
+                                oc.width=obj.height;
+                                oc.height=obj.width;
+                                ogc.rotate(90*Math.PI/180);
+                                ogc.drawImage(obj,0,-obj.height);
+                            break;
+                        case 2:
+                            oc.width=obj.width;
+                            oc.height=obj.height;
+                            ogc.rotate(180*Math.PI/180);
+                            ogc.drawImage(obj,-obj.width,-obj.height);
+                            break;
+                        case 3:
+                            oc.width=obj.height;
+                            oc.height=obj.width;
+                            ogc.rotate(270*Math.PI/180);
+                            ogc.drawImage(obj,-obj.width,0);
+                            break;
+                        case 0:
+                            oc.width=obj.width;
+                            oc.height=obj.height;
+                            ogc.rotate(0);
+                            ogc.drawImage(obj,0,0);
+                            break;
+                    }
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="<--"/> <!--左箭头代表逆向旋转-->
+<input type="button" value="-->"/> <!--右箭头代表顺时针旋转-->
+<div>
+    <img src="image/mxcz.png" id="img1"/> <!--将图片引入到这个div-->
+</div>
+</body>
+</html>
